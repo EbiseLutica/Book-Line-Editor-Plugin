@@ -1,0 +1,5 @@
+## YAML Template.
+---
+name: Book Line Editor Plugin
+version: 1.8.6-1.0.0-SNAPSHOT
+main: net.citringo.booklineeditorplugin.BookLineEditorPlugin
