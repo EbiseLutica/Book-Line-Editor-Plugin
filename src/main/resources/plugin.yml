@@ -3,3 +3,9 @@
 name: Book Line Editor Plugin
 version: 1.8.6-1.0.0-SNAPSHOT
 main: net.citringo.booklineeditorplugin.BookLineEditorPlugin
+commands:
+   blep:
+      description: You can edit the book in your handv('w')v
+      usage: /<command> edit/list/delete/insert
+      permission: booklineeditorplugin.writer
+      permission-message: I'm sorry, you don't have <permission> (;w;)
