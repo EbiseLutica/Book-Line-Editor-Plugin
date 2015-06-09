@@ -72,7 +72,7 @@ public class BookLineEditorPlugin extends JavaPlugin
 			switch (args[0])
 			{
 				case "edit":	// edit line text
-					if (args.length != 3)
+					if (args.length < 3)
 					{
 						sender.sendMessage("/blep edit <line> <text>");
 						return true;
@@ -90,7 +90,7 @@ public class BookLineEditorPlugin extends JavaPlugin
 							
 						}
 					}
-					lines.set(line, args[2]);
+					lines.set(line, text);
 					break;
 				case "list":	// list start end
 					if (args.length != 3)
@@ -108,7 +108,10 @@ public class BookLineEditorPlugin extends JavaPlugin
 					}
 					for (int i = start; i <= end; i++)
 					{
-						
+						TextComponent txt = new TextComponent(String.valueOf(i) + "   " + lines.get(i).replaceAll("§.", ""));
+						txt.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/blep edit " + String.valueOf(i) + " " + lines.get(i).replaceAll("§.", "")));
+						txt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("クリックして編集").create()));
+						player.spigot().sendMessage(txt);
 					}
 					break;
 				case "delete":	// delete line
