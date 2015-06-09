@@ -12,6 +12,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,6 +33,7 @@ public class BookLineEditorPlugin extends JavaPlugin
 	public void onEnable()
 	{
 		getLogger().info("BookLineEditorPlugin is enabled!");
+		
 	}
 
 	@Override
@@ -64,11 +69,12 @@ public class BookLineEditorPlugin extends JavaPlugin
 			switch (args[0])
 			{
 				case "edit":	// edit line text
-					if (args.length != 3)
+					if (args.length < 3)
 					{
 						sender.sendMessage("/blep edit <line> <text>");
 						return true;
 					}
+					String text = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 					Integer line = Integer.parseInt(args[1]);
 					if (line >= lines.size())
 					{
@@ -81,7 +87,7 @@ public class BookLineEditorPlugin extends JavaPlugin
 							
 						}
 					}
-					lines.set(line, args[2]);
+					lines.set(line, text);
 					break;
 				case "list":	// list start end
 					if (args.length != 3)
@@ -97,7 +103,13 @@ public class BookLineEditorPlugin extends JavaPlugin
 						return true;
 					}
 					for (int i = start; i <= end; i++)
-						sender.sendMessage(ChatColor.WHITE + lines.get(i));
+					{
+						getLogger().info(lines.get(i));
+						TextComponent txt = new TextComponent(String.valueOf(i) + "   " + lines.get(i).replaceAll("§.", ""));
+						txt.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/blep edit " + String.valueOf(i) + " " + lines.get(i).replaceAll("§.", "")));
+						txt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("クリックして編集").create()));
+						player.spigot().sendMessage(txt);
+					}
 					break;
 				case "delete":	// delete line
 					if (args.length != 2)
